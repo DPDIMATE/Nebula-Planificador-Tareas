@@ -1,0 +1,204 @@
+/* configuracion general */
+body {
+    background-color: #10111F;
+    color: #F5F2F8;
+    font-family: Arial, sans-serif;
+}
+
+
+/* titulo de la lista */
+#lista-tareas h2 {
+    color: #FF4FD8;
+    font-weight: bold;
+}
+
+/* Descripcion del encabezado */
+#lista-tareas > div:first-child p {
+    color: #F5F2F8;
+}
+/*efecto al pasar el cursor */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(168, 85, 247, 0.3);
+}
+
+/* Titulo de cada tarea */
+.card-title {
+    color: #FF4FD8;
+    font-weight: bold;
+}
+
+/* Descripcion y fecha */
+.card-text {
+    color: #F5F2F8;
+}
+/*diseño de las tarjetas */
+.card {
+    background-color: #25243A !important;
+    color: #F5F2F8 !important;
+    border: 1px solid #A855F7;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+/* Encabezado principal */
+header {
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #FF4FD8;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+header p {
+    font-size: 1.1rem;
+}
+
+/* título de las tareas */
+#lista-tareas {
+    text-align: left;
+}
+
+#lista-tareas h2 {
+    font-size: 2rem;
+}
+/* Tamaño general de los textos */
+body {
+    font-size: 18px;
+}
+
+/* Encabezado de Nebula */
+header h1 {
+    font-size: 3.5rem;
+}
+
+header p {
+    font-size: 1.3rem;
+}
+
+/*título Mis tareas */
+#lista-tareas h2 {
+    font-size: 2.3rem;
+}
+
+/* titulos de las tarjetas */
+.card-title {
+    font-size: 1.4rem;
+}
+
+/* Contenido de las tarjetas */
+.card-text {
+    font-size: 1.05rem;
+}
+/* formulario para crear tareas */
+#nueva-tarea {
+    background-color: #25243A;
+    border: 1px solid #A855F7;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(168, 85, 247, 0.15);
+}
+
+/* Título del formulario */
+#nueva-tarea h2 {
+    color: #FF4FD8;
+    font-weight: bold;
+}
+
+/*descripcion del formulario */
+#nueva-tarea p {
+    color: #F5F2F8;
+}
+
+/* Etiquetas de los campos */
+#nueva-tarea .form-label {
+    color: #F5F2F8;
+    font-weight: bold;
+}
+
+/* campos de entrada */
+#nueva-tarea .form-control,
+#nueva-tarea .form-select {
+    background-color: #10111F;
+    color: #F5F2F8;
+    border: 1px solid #A855F7;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+/* texto de ayuda dentro de los campos */
+#nueva-tarea .form-control::placeholder {
+    color: #aaa5bd;
+}
+
+/* efecto al seleccionar un campo */
+#nueva-tarea .form-control:focus,
+#nueva-tarea .form-select:focus {
+    border-color: #FF4FD8;
+    box-shadow: 0 0 8px rgba(255, 79, 216, 0.4);
+}
+
+/* botonn agregar tarea */
+#nueva-tarea .btn {
+    background-color: #A855F7;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+    font-weight: bold;
+}
+
+/*efecto del boton */
+#nueva-tarea .btn:hover {
+    background-color: #FF4FD8;
+    color: #10111F;
+}
+
+/* NÉBULA - ROBOTITA INTERACTIVA */
+
+.mascota-nebula {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Mensaje */
+
+.mensaje-nebula {
+    max-width: 210px;
+    padding: 12px 16px;
+    border: 1px solid #A855F7;
+    border-radius: 18px;
+    background: #25243A;
+    color: #F5F2F8;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: 0 0 15px #A855F744;
+}
+
+/* Imagen de Nébula */
+
+.imagen-nebula {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    animation: flotar-nebula 3s ease-in-out infinite;
+}
+
+@keyframes flotar-nebula {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}

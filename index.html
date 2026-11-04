@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula | Planificador de Tareas</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--estilos propios -->
+    <link rel="stylesheet" href="CSS/styles.css">
+    
+
+</head>
+<body>
+
+<main class="container-fluid px-lg-5 py-5">
+    
+<!--encabezado de nebula -->
+<header class="text-center mb-5">
+    <h1>Nebula</h1>
+    <p>Tu pequeño universo de productividad</p>
+    <p>Organiza tus tareas, avanza a tu ritmo y celebra cada logro.</p>
+</header>
+<!--formulario para crear tareas -->
+<section id="nueva-tarea" class="mb-5">
+    <div class="mb-4">
+        <h2> Nueva tarea</h2>
+        <p>Organiza tu próxima misión en el universo Nébula.</p>
+    </div>
+
+    <form id="formulario-tarea">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label for="nombre-tarea" class="form-label">Nombre de la tarea</label>
+                <input type="text" class="form-control" id="nombre-tarea"
+                    placeholder="Ej. Estudiar JavaScript" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="fecha-tarea" class="form-label">Fecha de entrega</label>
+                <input type="date" class="form-control" id="fecha-tarea" required>
+            </div>
+
+            <div class="col-12">
+                <label for="descripcion-tarea" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion-tarea" rows="3"
+                    placeholder="Describe lo que necesitas hacer..." required></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label for="prioridad-tarea" class="form-label">Prioridad</label>
+                <select class="form-select" id="prioridad-tarea" required>
+                    <option value="" selected disabled>Selecciona una prioridad</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Media</option>
+                    <option value="Baja">Baja</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="categoria-tarea" class="form-label">Categoría</label>
+                <select class="form-select" id="categoria-tarea" required>
+                    <option value="" selected disabled>Selecciona una categoría</option>
+                    <option value="Estudio">Estudio</option>
+                    <option value="Trabajo">Trabajo</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    + Agregar tarea
+                </button>
+            </div>
+
+        </div>
+    </form>
+</section>
+<!-- seccion de tareas -->
+<section id="lista-tareas">
+    <div class="mb-4">
+        <h2>Mis tareas</h2>
+        <p>Organiza tus actividades y alcanza tus objetivos.</p>
+    </div>
+
+    <!-- lista de tarjetas -->
+    <div class="row" id="contenedor-tareas">
+    </div>
+</section>
+
+</main>
+
+
+<!-- Mascota interactiva Nébula -->
+<div id="mascota-nebula" class="mascota-nebula">
+
+    <div id="mensaje-nebula" class="mensaje-nebula" aria-live="polite">
+        ¡Hola! ¿Lista para completar tus misiones?
+    </div>
+
+<img
+    src="./IMG/robot nebula.png"
+    alt="Nébula, tu asistente virtual"
+    id="robot-nebula"
+    class="imagen-nebula"
+>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
