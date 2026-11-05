@@ -1,10 +1,26 @@
 /* configuracion general */
 body {
-    background-color: #10111F;
+    background:
+        radial-gradient(circle at 20% 40%, rgba(255, 79, 216, 0.18), transparent 12%),
+        radial-gradient(circle at 75% 55%, rgba(70, 240, 211, 0.16), transparent 15%),
+        radial-gradient(circle at 50% 10%, rgba(168, 85, 247, 0.20), transparent 18%),
+        radial-gradient(circle at 10% 15%, #FFFFFF 0 2px, transparent 3px),
+        radial-gradient(circle at 25% 75%, #FF4FD8 0 2px, transparent 3px),
+        radial-gradient(circle at 45% 35%, #FFFFFF 0 2px, transparent 3px),
+        radial-gradient(circle at 65% 80%, #46F0D3 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 25%, #FFFFFF 0 2px, transparent 3px),
+        radial-gradient(circle at 92% 60%, #A855F7 0 2px, transparent 3px),
+        radial-gradient(ellipse at 15% 20%, rgba(168, 85, 247, 0.30), transparent 35%),
+        radial-gradient(ellipse at 85% 15%, rgba(255, 79, 216, 0.20), transparent 35%),
+        radial-gradient(ellipse at 50% 85%, rgba(70, 240, 211, 0.16), transparent 40%),
+        linear-gradient(135deg, #24204D, #171936 55%, #25204A);
+
+    background-attachment: fixed;
+    background-size: 100% 100%;
     color: #F5F2F8;
     font-family: Arial, sans-serif;
+    min-height: 100vh;
 }
-
 
 /* titulo de la lista */
 #lista-tareas h2 {
@@ -13,9 +29,10 @@ body {
 }
 
 /* Descripcion del encabezado */
-#lista-tareas > div:first-child p {
+#lista-tareas>div:first-child p {
     color: #F5F2F8;
 }
+
 /*efecto al pasar el cursor */
 .card:hover {
     transform: translateY(-5px);
@@ -32,6 +49,7 @@ body {
 .card-text {
     color: #F5F2F8;
 }
+
 /*diseño de las tarjetas */
 .card {
     background-color: #25243A !important;
@@ -40,6 +58,7 @@ body {
     border-radius: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 /* Encabezado principal */
 header {
     text-align: center;
@@ -65,6 +84,7 @@ header p {
 #lista-tareas h2 {
     font-size: 2rem;
 }
+
 /* Tamaño general de los textos */
 body {
     font-size: 18px;
@@ -93,6 +113,7 @@ header p {
 .card-text {
     font-size: 1.05rem;
 }
+
 /* formulario para crear tareas */
 #nueva-tarea {
     background-color: #25243A;
@@ -194,11 +215,163 @@ header p {
 }
 
 @keyframes flotar-nebula {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
 
     50% {
         transform: translateY(-7px);
     }
+}
+
+/* Decoracion del universo */
+.decoracion-universo {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.planeta {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.85;
+}
+
+.planeta-uno {
+    width: 90px;
+    height: 90px;
+    top: 18%;
+    left: 4%;
+    background: radial-gradient(circle at 30% 30%, #FFB5F0, #A855F7 65%, #542C91);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.35);
+    position: relative;
+}
+
+.planeta-dos {
+    width: 55px;
+    height: 55px;
+    top: 55%;
+    right: 5%;
+    background: radial-gradient(circle at 30% 30%, #B9FFF5, #46F0D3 65%, #168E91);
+    box-shadow: 0 0 25px rgba(70, 240, 211, 0.35);
+}
+
+.planeta-tres {
+    width: 38px;
+    height: 38px;
+    bottom: 10%;
+    left: 18%;
+    background: radial-gradient(circle at 30% 30%, #FFC2EC, #FF4FD8 70%, #9B267F);
+    box-shadow: 0 0 20px rgba(255, 79, 216, 0.35);
+}
+.planeta-uno::after {
+    content: "";
+    position: absolute;
+    width: 135px;
+    height: 35px;
+    border: 3px solid rgba(255, 79, 216, 0.65);
+    border-radius: 50%;
+    top: 28px;
+    left: -22px;
+    transform: rotate(-25deg);
+    box-shadow: 0 0 12px rgba(255, 79, 216, 0.4);
+}
+/* Movimiento de los planetas */
+.planeta-uno {
+    animation: flotar-planeta 5s ease-in-out infinite;
+}
+
+.planeta-dos {
+    animation: flotar-planeta 6s ease-in-out infinite;
+}
+
+.planeta-tres {
+    animation: flotar-planeta 4s ease-in-out infinite;
+}
+
+@keyframes flotar-planeta {
+    0%, 100% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -12px;
+    }
+}
+/* Lunita decorativa */
+.luna {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    top: 35%;
+    right: 20%;
+    border-radius: 50%;
+    background: #F5F2F8;
+    box-shadow: 0 0 18px rgba(245, 242, 248, 0.7);
+}
+
+.luna::after {
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: -6px;
+    left: 10px;
+    border-radius: 50%;
+    background: #25204A;
+}
+/* Camino galáctico */
+.camino-galactico {
+    position: absolute;
+    width: 280px;
+    height: 600px;
+    top: 15%;
+    left: 50%;
+    border-left: 3px dashed rgba(255, 79, 216, 0.45);
+    border-radius: 50%;
+    transform: rotate(25deg);
+    filter: drop-shadow(0 0 3px rgba(255, 79, 216, 0.3));
+    pointer-events: none;
+}
+/* Estrellas del camino */
+.estrella-camino {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #F5F2F8;
+    box-shadow: 0 0 8px #FF4FD8;
+}
+
+.estrella-uno {
+    top: 15%;
+    left: -6px;
+}
+
+.estrella-dos {
+    top: 50%;
+    left: -6px;
+}
+
+.estrella-tres {
+    top: 85%;
+    left: -6px;
+}
+main {
+    position: relative;
+    z-index: 1;
+}
+
+.decoracion-universo {
+    z-index: -1;
+}
+/* Distribución galáctica de las misiones */
+#contenedor-tareas {
+    position: relative;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }

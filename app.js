@@ -1,7 +1,7 @@
 // elementos del HTML
 const formulario = document.getElementById("formulario-tarea");
 const contenedorTareas = document.getElementById("contenedor-tareas");
-
+const alertaFormulario = document.getElementById("alerta-formulario");
 // Elementos de Nébula
 const imagenNebula = document.getElementById("robot-nebula");
 const mensajeNebula = document.getElementById("mensaje-nebula");
@@ -19,6 +19,26 @@ const expresionesNebula = {
 function cambiarNebula(expresion, mensaje) {
     imagenNebula.src = expresionesNebula[expresion];
     mensajeNebula.textContent = mensaje;
+} function validFormFieldInput(data) {
+    const errores = [];
+
+    if (!data.nombre.trim()) {
+        errores.push("El nombre de la tarea es obligatorio.");
+    }
+
+    if (!data.descripcion.trim()) {
+        errores.push("La descripción es obligatoria.");
+    }
+
+    if (!data.fecha) {
+        errores.push("La fecha de entrega es obligatoria.");
+    }
+
+    if (!data.estado) {
+        errores.push("Debes seleccionar un estado para la tarea.");
+    }
+
+    return errores;
 }
 
 // Bienvenida al abrir el planificador
@@ -88,7 +108,7 @@ function guardarTareas() {
 function mostrarTareas() {
     contenedorTareas.innerHTML = "";
 
-    tareas.forEach(function(tarea) {
+    tareas.forEach(function (tarea) {
 
         const tarjeta = document.createElement("div");
         tarjeta.classList.add("col-md-6", "col-lg-4", "mb-4");
@@ -122,14 +142,18 @@ function mostrarTareas() {
         const estado = document.createElement("span");
         estado.classList.add("badge");
 
-        if (tarea.completada) {
+        const estadoActual = tarea.estado || (tarea.completada ? "Completada" : "Pendiente");
+
+        if (estadoActual === "Completada") {
             estado.classList.add("text-bg-success");
-            estado.textContent = "Completada";
             titulo.style.textDecoration = "line-through";
+        } else if (estadoActual === "En progreso") {
+            estado.classList.add("text-bg-info");
         } else {
             estado.classList.add("text-bg-warning");
-            estado.textContent = "Pendiente";
         }
+
+        estado.textContent = estadoActual;
 
         // boton para cambiar el estado
         const botonCompletar = document.createElement("button");
@@ -138,34 +162,35 @@ function mostrarTareas() {
             ? "Reabrir tarea"
             : "Completar";
 
-        botonCompletar.addEventListener("click", function() {
+        botonCompletar.addEventListener("click", function () {
 
-    tarea.completada = !tarea.completada;
+            tarea.completada = !tarea.completada;
+            tarea.estado = tarea.completada ? "Completada" : "Pendiente";
 
-    guardarTareas();
-    mostrarTareas();
+            guardarTareas();
+            mostrarTareas();
 
-    if (tarea.completada) {
-        cambiarNebula(
-            "feliz",
-            "¡Lo lograste! Una misión menos. 💜"
-        );
-    } else {
-        cambiarNebula(
-            "pensativa",
-            "¡Esta misión vuelve a estar pendiente! Vamos paso a paso."
-        );
-    }
+            if (tarea.completada) {
+                cambiarNebula(
+                    "feliz",
+                    "¡Lo lograste! Una misión menos. 💜"
+                );
+            } else {
+                cambiarNebula(
+                    "pensativa",
+                    "¡Esta misión vuelve a estar pendiente! Vamos paso a paso."
+                );
+            }
 
-});
+        });
 
         // botonn para eliminar
         const botonEliminar = document.createElement("button");
         botonEliminar.classList.add("btn", "btn-danger", "mt-3");
         botonEliminar.textContent = "Eliminar";
 
-        botonEliminar.addEventListener("click", function() {
-            tareas = tareas.filter(function(elemento) {
+        botonEliminar.addEventListener("click", function () {
+            tareas = tareas.filter(function (elemento) {
                 return elemento.id !== tarea.id;
             });
 
@@ -193,8 +218,28 @@ function mostrarTareas() {
 }
 
 // rsgitro de la una nueva tarea
-formulario.addEventListener("submit", function(event) {
+formulario.addEventListener("submit", function (event) {
     event.preventDefault();
+    const nombre = formulario.querySelector("#nombre-tarea").value;
+    const descripcion = formulario.querySelector("#descripcion-tarea").value;
+    const fecha = formulario.querySelector("#fecha-tarea").value;
+    const estado = formulario.querySelector("#estado-tarea").value;
+
+    console.log(nombre, descripcion, fecha, estado);
+    const errores = validFormFieldInput({
+        nombre,
+        descripcion,
+        fecha,
+        estado
+    });
+
+    if (errores.length > 0) {
+        alertaFormulario.textContent = errores.join(" ");
+        alertaFormulario.classList.remove("d-none");
+        return;
+    }
+
+    alertaFormulario.classList.add("d-none");
 
     const nuevaTarea = {
         id: Date.now(),
@@ -203,21 +248,22 @@ formulario.addEventListener("submit", function(event) {
         fecha: document.getElementById("fecha-tarea").value,
         prioridad: document.getElementById("prioridad-tarea").value,
         categoria: document.getElementById("categoria-tarea").value,
-        completada: false
+        estado: estado,
+        completada: estado === "Completada"
     };
 
     tareas.push(nuevaTarea);
 
-guardarTareas();
-mostrarTareas();
+    guardarTareas();
+    mostrarTareas();
 
-cambiarNebula(
-    "celebrando",
-    "¡Una nueva misión! 🎉 Vamos con toda."
-);
+    cambiarNebula(
+        "celebrando",
+        "¡Una nueva misión! 🎉 Vamos con toda."
+    );
 
-formulario.reset();
-    
+    formulario.reset();
+
 });
 // Revisar si hay tareas próximas a vencer
 function revisarFechasTareas() {
@@ -227,7 +273,7 @@ function revisarFechasTareas() {
     const manana = new Date(hoy);
     manana.setDate(manana.getDate() + 1);
 
-    const tareasProximas = tareas.filter(function(tarea) {
+    const tareasProximas = tareas.filter(function (tarea) {
         if (tarea.completada || !tarea.fecha) {
             return false;
         }
@@ -235,22 +281,22 @@ function revisarFechasTareas() {
         const fechaEntrega = new Date(tarea.fecha + "T00:00:00");
 
         return fechaEntrega.getTime() === hoy.getTime() ||
-               fechaEntrega.getTime() === manana.getTime();
+            fechaEntrega.getTime() === manana.getTime();
     });
 
-if (tareasProximas.length === 1) {
-    cambiarNebula(
-        "pensativa",
-        "¡Atención! Tienes una misión próxima a vencer. ¡No la olvides! 💜"
-    );
+    if (tareasProximas.length === 1) {
+        cambiarNebula(
+            "pensativa",
+            "¡Atención! Tienes una misión próxima a vencer. ¡No la olvides! 💜"
+        );
 
-} else if (tareasProximas.length > 1) {
-    cambiarNebula(
-        "pensativa",
-        "¡Atención! Tienes " + tareasProximas.length +
-        " misiones próximas a vencer. ¡Vamos con ellas! 💜"
-    );
-}
+    } else if (tareasProximas.length > 1) {
+        cambiarNebula(
+            "pensativa",
+            "¡Atención! Tienes " + tareasProximas.length +
+            " misiones próximas a vencer. ¡Vamos con ellas! 💜"
+        );
+    }
 }
 // Control de inactividad de Nébula
 let temporizadorNebula;
@@ -265,7 +311,7 @@ function reiniciarTemporizadorNebula() {
         );
     }
 
-    temporizadorNebula = setTimeout(function() {
+    temporizadorNebula = setTimeout(function () {
         cambiarNebula(
             "dormida",
             "Zzz... Me tomaré una siestecita. 😴💜"
@@ -278,7 +324,7 @@ document.addEventListener("mousemove", reiniciarTemporizadorNebula);
 document.addEventListener("keydown", reiniciarTemporizadorNebula);
 document.addEventListener("scroll", reiniciarTemporizadorNebula);
 window.addEventListener("pointerdown", reiniciarTemporizadorNebula);
-window.addEventListener("pointerdown", function() {
+window.addEventListener("pointerdown", function () {
     console.log("Detecté un clic en la página");
 });
 // Iniciar el temporizador
