@@ -1,3 +1,8 @@
+// Administrador de tareas
+const taskManager = new TaskManager();
+
+console.log(taskManager.tasks);
+
 // elementos del HTML
 const formulario = document.getElementById("formulario-tarea");
 const contenedorTareas = document.getElementById("contenedor-tareas");
