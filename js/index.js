@@ -220,6 +220,10 @@ function mostrarTareas() {
     });
 }
 // Evento para eliminar tareas
+// Conectar el método render con la función que muestra las tareas
+taskManager.renderCallback = mostrarTareas;
+
+// Evento para eliminar tareas
 contenedorTareas.addEventListener("click", function(event) {
     if (event.target.classList.contains("delete-button")) {
         const parentTask = event.target.parentElement;
@@ -228,8 +232,8 @@ contenedorTareas.addEventListener("click", function(event) {
         taskManager.deleteTask(taskId);
         tareas = taskManager.tasks;
 
-        guardarTareas();
-        mostrarTareas();
+        taskManager.save();
+        taskManager.render();
     }
 });
 

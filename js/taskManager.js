@@ -1,9 +1,8 @@
-
-
 class TaskManager {
     constructor(currentId = 0) {
         this.tasks = [];
         this.currentId = currentId;
+        this.renderCallback = null;
     }
 
     addTask(nombre, descripcion, fecha, prioridad, categoria, estado) {
@@ -32,5 +31,15 @@ class TaskManager {
         }
 
         this.tasks = newTasks;
+    }
+
+    save() {
+        localStorage.setItem("tareasNebula", JSON.stringify(this.tasks));
+    }
+
+    render() {
+        if (typeof this.renderCallback === "function") {
+            this.renderCallback();
+        }
     }
 }
