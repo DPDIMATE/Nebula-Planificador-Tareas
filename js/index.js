@@ -24,7 +24,9 @@ const expresionesNebula = {
 function cambiarNebula(expresion, mensaje) {
     imagenNebula.src = expresionesNebula[expresion];
     mensajeNebula.textContent = mensaje;
-} function validFormFieldInput(data) {
+}
+
+function validFormFieldInput(data) {
     const errores = [];
 
     if (!data.nombre.trim()) {
@@ -41,6 +43,14 @@ function cambiarNebula(expresion, mensaje) {
 
     if (!data.estado) {
         errores.push("Debes seleccionar un estado para la tarea.");
+    }
+
+    if (!data.prioridad) {
+        errores.push("Debes seleccionar una prioridad.");
+    }
+
+    if (!data.categoria) {
+        errores.push("Debes seleccionar una categoría.");
     }
 
     return errores;
@@ -103,7 +113,11 @@ const tareasIniciales = [
 
 // para recuperar tareas guardadas
 let tareas = JSON.parse(localStorage.getItem("tareasNebula")) || tareasIniciales;
+taskManager.tasks = tareas;
 
+taskManager.currentId = tareas.reduce(function(mayorId, tarea) {
+    return Math.max(mayorId, Number(tarea.id) || 0);
+}, 0);
 // para guardar las tareas en el navegador
 function guardarTareas() {
     localStorage.setItem("tareasNebula", JSON.stringify(tareas));
@@ -123,6 +137,7 @@ function mostrarTareas() {
 
         const cuerpo = document.createElement("div");
         cuerpo.classList.add("card-body");
+        cuerpo.dataset.taskId = tarea.id;
 
         const titulo = document.createElement("h5");
         titulo.classList.add("card-title");
@@ -160,15 +175,15 @@ function mostrarTareas() {
 
         estado.textContent = estadoActual;
 
-        // boton para cambiar el estado
+        // Botón para cambiar el estado
         const botonCompletar = document.createElement("button");
         botonCompletar.classList.add("btn", "btn-primary", "mt-3", "me-2");
+
         botonCompletar.textContent = tarea.completada
             ? "Reabrir tarea"
             : "Completar";
 
-        botonCompletar.addEventListener("click", function () {
-
+        botonCompletar.addEventListener("click", function() {
             tarea.completada = !tarea.completada;
             tarea.estado = tarea.completada ? "Completada" : "Pendiente";
 
@@ -176,34 +191,17 @@ function mostrarTareas() {
             mostrarTareas();
 
             if (tarea.completada) {
-                cambiarNebula(
-                    "feliz",
-                    "¡Lo lograste! Una misión menos. 💜"
-                );
+                cambiarNebula("feliz", "¡Lo lograste! Una misión menos.");
             } else {
-                cambiarNebula(
-                    "pensativa",
-                    "¡Esta misión vuelve a estar pendiente! Vamos paso a paso."
-                );
+                cambiarNebula("pensativa", "¡Esta misión vuelve a estar pendiente! Vamos paso a paso.");
             }
-
         });
 
-        // botonn para eliminar
+        // Botón para eliminar
         const botonEliminar = document.createElement("button");
-        botonEliminar.classList.add("btn", "btn-danger", "mt-3");
+        botonEliminar.classList.add("btn", "btn-danger", "mt-3", "delete-button");
         botonEliminar.textContent = "Eliminar";
-
-        botonEliminar.addEventListener("click", function () {
-            tareas = tareas.filter(function (elemento) {
-                return elemento.id !== tarea.id;
-            });
-
-            guardarTareas();
-            mostrarTareas();
-        });
-
-        // organizacion de la tarjeta
+        // Organización de la tarjeta
         cuerpo.append(
             titulo,
             descripcion,
@@ -221,6 +219,19 @@ function mostrarTareas() {
         contenedorTareas.appendChild(tarjeta);
     });
 }
+// Evento para eliminar tareas
+contenedorTareas.addEventListener("click", function(event) {
+    if (event.target.classList.contains("delete-button")) {
+        const parentTask = event.target.parentElement;
+        const taskId = Number(parentTask.dataset.taskId);
+
+        taskManager.deleteTask(taskId);
+        tareas = taskManager.tasks;
+
+        guardarTareas();
+        mostrarTareas();
+    }
+});
 
 // rsgitro de la una nueva tarea
 formulario.addEventListener("submit", function (event) {
@@ -229,14 +240,17 @@ formulario.addEventListener("submit", function (event) {
     const descripcion = formulario.querySelector("#descripcion-tarea").value;
     const fecha = formulario.querySelector("#fecha-tarea").value;
     const estado = formulario.querySelector("#estado-tarea").value;
-
+    const prioridad = formulario.querySelector("#prioridad-tarea").value;
+    const categoria = formulario.querySelector("#categoria-tarea").value;
     console.log(nombre, descripcion, fecha, estado);
     const errores = validFormFieldInput({
-        nombre,
-        descripcion,
-        fecha,
-        estado
-    });
+    nombre,
+    descripcion,
+    fecha,
+    estado,
+    prioridad,
+    categoria
+});
 
     if (errores.length > 0) {
         alertaFormulario.textContent = errores.join(" ");
@@ -246,18 +260,16 @@ formulario.addEventListener("submit", function (event) {
 
     alertaFormulario.classList.add("d-none");
 
-    const nuevaTarea = {
-        id: Date.now(),
-        nombre: document.getElementById("nombre-tarea").value.trim(),
-        descripcion: document.getElementById("descripcion-tarea").value.trim(),
-        fecha: document.getElementById("fecha-tarea").value,
-        prioridad: document.getElementById("prioridad-tarea").value,
-        categoria: document.getElementById("categoria-tarea").value,
-        estado: estado,
-        completada: estado === "Completada"
-    };
+taskManager.addTask(
+    nombre.trim(),
+    descripcion.trim(),
+    fecha,
+    prioridad,
+    categoria,
+    estado
+);
 
-    tareas.push(nuevaTarea);
+tareas = taskManager.tasks;
 
     guardarTareas();
     mostrarTareas();
