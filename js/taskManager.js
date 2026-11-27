@@ -1,3 +1,4 @@
+
 class TaskManager {
     constructor(currentId = 0) {
         this.tasks = [];
@@ -16,7 +17,7 @@ class TaskManager {
             prioridad: prioridad,
             categoria: categoria,
             estado: estado,
-            status: "PORHACER",
+            status: estado === "Completada" ? "DONE" : "PORHACER",
             completada: estado === "Completada"
         });
     }
@@ -31,6 +32,19 @@ class TaskManager {
         }
 
         this.tasks = newTasks;
+    }
+
+    // Buscar una tarea por su ID
+    getTaskById(taskId) {
+        let foundTask;
+
+        for (let task of this.tasks) {
+            if (task.id === taskId) {
+                foundTask = task;
+            }
+        }
+
+        return foundTask;
     }
 
     save() {

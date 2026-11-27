@@ -175,27 +175,13 @@ function mostrarTareas() {
 
         estado.textContent = estadoActual;
 
-        // Botón para cambiar el estado
-        const botonCompletar = document.createElement("button");
-        botonCompletar.classList.add("btn", "btn-primary", "mt-3", "me-2");
+// Botón para cambiar el estado
+const botonCompletar = document.createElement("button");
+botonCompletar.classList.add("btn", "btn-primary", "mt-3", "me-2", "done-button");
 
-        botonCompletar.textContent = tarea.completada
-            ? "Reabrir tarea"
-            : "Completar";
-
-        botonCompletar.addEventListener("click", function() {
-            tarea.completada = !tarea.completada;
-            tarea.estado = tarea.completada ? "Completada" : "Pendiente";
-
-            guardarTareas();
-            mostrarTareas();
-
-            if (tarea.completada) {
-                cambiarNebula("feliz", "¡Lo lograste! Una misión menos.");
-            } else {
-                cambiarNebula("pensativa", "¡Esta misión vuelve a estar pendiente! Vamos paso a paso.");
-            }
-        });
+botonCompletar.textContent = tarea.completada
+    ? "Reabrir tarea"
+    : "Completar";
 
         // Botón para eliminar
         const botonEliminar = document.createElement("button");
@@ -223,8 +209,32 @@ function mostrarTareas() {
 // Conectar el método render con la función que muestra las tareas
 taskManager.renderCallback = mostrarTareas;
 
-// Evento para eliminar tareas
+
+// Evento para completar y eliminar tareas
 contenedorTareas.addEventListener("click", function(event) {
+
+    // Actualizar el estado de una tarea
+    if (event.target.classList.contains("done-button")) {
+        const parentTask = event.target.parentElement;
+        const taskId = Number(parentTask.dataset.taskId);
+
+        const task = taskManager.getTaskById(taskId);
+
+        task.completada = !task.completada;
+        task.estado = task.completada ? "Completada" : "Pendiente";
+        task.status = task.completada ? "DONE" : "PORHACER";
+
+       taskManager.save();
+       taskManager.render();
+
+        if (task.completada) {
+            cambiarNebula("feliz", "¡Lo lograste! Una misión menos.");
+        } else {
+            cambiarNebula("pensativa", "¡Esta misión vuelve a estar pendiente! Vamos paso a paso.");
+        }
+    }
+
+    // Eliminar una tarea
     if (event.target.classList.contains("delete-button")) {
         const parentTask = event.target.parentElement;
         const taskId = Number(parentTask.dataset.taskId);
